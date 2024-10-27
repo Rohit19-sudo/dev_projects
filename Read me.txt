@@ -1,0 +1,32 @@
+Pre-requisite:
+1. Update bucket name in src/app.py line no. 9 , var name BUCKET_NAME.
+    ex : BUCKET_NAME = 'dev-bucket'
+
+2. Update API_URL In test_app.py post deployment
+
+Api request body:
+
+{"source": "testapp",
+"filename": "sample.txt",
+"metadata": {
+    "file_format": "json",
+    "description": "test file"
+    }
+}
+
+
+
+
+Steps to deploy:
+
+-- Generate template and upload artifact to code bucket
+
+sam package --s3-bucket <bucket_name> --template-file template.yaml --output-template-file gen/template-generated.yaml --region <region_name>
+
+
+-- Validate generated template
+sam validate --template-file D:\work\project\s3_signed_url_api\gen\template-generated.yaml
+
+
+-- Deploy resources
+sam deploy --template-file D:\work\project\s3_signed_url_api\gen\template-generated.yaml --stack-name test-stack --region ap-south-1  --capabilities CAPABILITY_IAM
